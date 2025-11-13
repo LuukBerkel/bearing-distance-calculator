@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSM Path Planner</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+        }
+
+        #map {
+            flex: 3;
+        }
+
+        #sidebar {
+            flex: 1;
+            padding: 15px;
+            background: #f3f3f3;
+            border-left: 2px solid #ccc;
+            overflow-y: auto;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        .coord {
+            padding: 6px;
+            margin-bottom: 5px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="map"></div>
+
+    <div id="sidebar">
+        <h2>Clicked Coordinates</h2>
+        <button id="undoBtn" style="margin-bottom:10px;">Undo Last</button>
+        <div id="coords"></div>
+    </div>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script>
+        const map = L.map('map').setView([52.1326, 5.2913], 7);
+
+        // Load OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+     
+        let points = [];
+        let markers = [];
+        let polyline = L.polyline([], { color: 'blue', weight: 4 }).addTo(map);
+
+        map.on('click', function (e) {
+            const { lat, lng } = e.latlng;
+
+            const marker = L.marker([lat, lng]).addTo(map);
+            markers.push(marker);
+
+            document.getElementById('coords').innerHTML +=
+                `<div class="coord">Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)}</div>`;
+
+            points.push([lat, lng]);
+            polyline.setLatLngs(points);
+        });
+
+        document.getElementById('undoBtn').addEventListener('click', () => {
+            if (markers.length === 0) return;
+
+            const lastMarker = markers.pop();
+            map.removeLayer(lastMarker);
+
+
+            const coordList = document.getElementById('coords');
+            coordList.removeChild(coordList.lastElementChild);
+
+            points.pop();
+            polyline.setLatLngs(points);
+        });
+
+    </script>
+
+
+<!-- // Where we store points and markers
+let points = [];
+let markers = [];
+
+map.on('click', function (e) {
+    const { lat, lng } = e.latlng;
+
+    // Save point
+    points.push([lat, lng]);
+
+    // Add marker and store reference
+    const marker = L.marker([lat, lng]).addTo(map);
+    markers.push(marker);
+
+    // Show in sidebar
+    document.getElementById('coords').innerHTML +=
+        `<div class="coord">Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)}</div>`;
+});
+
+// Undo button handler
+document.getElementById('undoBtn').addEventListener('click', () => {
+    if (markers.length === 0) return;
+
+    // Remove last marker from map
+    const lastMarker = markers.pop();
+    map.removeLayer(lastMarker);
+
+    // Remove last point
+    points.pop();
+
+    // Remove last coord div
+    const coordList = document.getElementById('coords');
+    coordList.removeChild(coordList.lastElementChild);
+}); -->
+
+</body>
+</html>
