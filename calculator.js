@@ -50,7 +50,6 @@ function addPoint(point) {
     markers.push(marker);
 
     if (markers.length > 1) {
-        console.log(markers.length)
         const [prevLat, prevLng] = points[points.length - 1];
         const distance = getDistance(prevLat, prevLng, lat, lng).toFixed(2);
         const bearing = getBearing(prevLat, prevLng, lat, lng).toFixed(2);
@@ -58,28 +57,32 @@ function addPoint(point) {
             `<div class="list">Bearing: ${bearing}, Distance: ${distance}</div>`;
     }
 
-
-    document.getElementById('list').innerHTML +=
-        `<div class="list">Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)}</div>`;
-
     points.push([lat, lng]);
     polyline.setLatLngs(points);
 }
 
 function removePoint() {
     if (markers.length === 0) return;
+    var hasTwoMarkers = markers.length === 2 ? true : false;
+    var hasOneMarker =  markers.length === 1 ? true : false;
+
 
     const lastMarker = markers.pop();
     map.removeLayer(lastMarker);
+    if (hasTwoMarkers) {
+        const lastMarker = markers.pop();
+        map.removeLayer(lastMarker);
+    }
 
-
-    const list = document.getElementById('list');
-    if (markers.length !== 0) {
+    if (!hasOneMarker){
+        const list = document.getElementById('list');
         list.removeChild(list.lastElementChild); 
     }
-    list.removeChild(list.lastElementChild);
 
     points.pop();
+    if (hasTwoMarkers) {
+        points.pop();
+    }
     polyline.setLatLngs(points);
 }
 
