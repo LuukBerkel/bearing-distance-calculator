@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OSM Path Planner</title>
+    <title>Bearing Distance Calculator</title>
 
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
@@ -32,7 +32,7 @@
             margin-top: 0;
         }
 
-        .coord {
+        .list {
             padding: 6px;
             margin-bottom: 5px;
             background: white;
@@ -49,53 +49,26 @@
     <div id="sidebar">
         <h2>Clicked Coordinates</h2>
         <button id="undoBtn" style="margin-bottom:10px;">Undo Last</button>
-        <div id="coords"></div>
+        <div id="list"></div>
     </div>
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
+    <script src="./calculator.js"></script> 
     <script>
-        const map = L.map('map').setView([52.1326, 5.2913], 7);
-
-        // Load OpenStreetMap tiles
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(map);
-
-     
-        let points = [];
-        let markers = [];
-        let polyline = L.polyline([], { color: 'blue', weight: 4 }).addTo(map);
-
         map.on('click', function (e) {
-            const { lat, lng } = e.latlng;
-
-            const marker = L.marker([lat, lng]).addTo(map);
-            markers.push(marker);
-
-            document.getElementById('coords').innerHTML +=
-                `<div class="coord">Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)}</div>`;
-
-            points.push([lat, lng]);
-            polyline.setLatLngs(points);
+            addPoint(e);
         });
 
         document.getElementById('undoBtn').addEventListener('click', () => {
-            if (markers.length === 0) return;
-
-            const lastMarker = markers.pop();
-            map.removeLayer(lastMarker);
-
-
-            const coordList = document.getElementById('coords');
-            coordList.removeChild(coordList.lastElementChild);
-
-            points.pop();
-            polyline.setLatLngs(points);
+            removePoint();
         });
 
+        document.addEventListener('keydown', function(event) {
+        if (event.ctrlKey && event.key === 'z') {
+            removePoint();
+        }
+        });
     </script>
-
 
 <!-- // Where we store points and markers
 let points = [];
