@@ -16,7 +16,7 @@ function toDegrees (angle) {
 }
 
 function getDistance(lat1, lng1, lat2, lng2) {
-    const R = 6371000; // Earth's radius in meters
+    const R = 6371000; 
     const φ1 = toRadians(lat1);
     const φ2 = toRadians(lat2);
     const Δφ = toRadians(lat2 - lat1);
@@ -40,7 +40,7 @@ function getBearing(lat1, lng1, lat2, lng2) {
               Math.sin(φ1) * Math.cos(φ2) * Math.cos(Δλ);
     const θ = Math.atan2(y, x);
 
-    return (toDegrees(θ) + 360) % 360; // in degrees
+    return (toDegrees(θ) + 360) % 360;
 }
 
 function addPoint(point) {
@@ -74,11 +74,9 @@ function removePoint() {
 
 
     const list = document.getElementById('list');
-   
     if (markers.length !== 0) {
         list.removeChild(list.lastElementChild); 
     }
-
     list.removeChild(list.lastElementChild);
 
     points.pop();
