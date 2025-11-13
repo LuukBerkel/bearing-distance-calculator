@@ -27,7 +27,7 @@ function getDistance(lat1, lng1, lat2, lng2) {
               Math.sin(Δλ/2) * Math.sin(Δλ/2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
-    return R * c; // in meters
+    return R * c;
 }
 
 function getBearing(lat1, lng1, lat2, lng2) {
@@ -54,7 +54,7 @@ function addPoint(point) {
         const distance = getDistance(prevLat, prevLng, lat, lng).toFixed(2);
         const bearing = getBearing(prevLat, prevLng, lat, lng).toFixed(2);
         document.getElementById('list').innerHTML +=
-            `<div class="list">Bearing: ${bearing}, Distance: ${distance}</div>`;
+            `<div class="list">Bearing: ${bearing}°, Distance: ${distance} m</div>`;
     }
 
     points.push([lat, lng]);
