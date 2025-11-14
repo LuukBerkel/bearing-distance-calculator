@@ -5,6 +5,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 let points = [];
 let markers = [];
+let result = [];
 let polyline = L.polyline([], { color: 'blue', weight: 4 }).addTo(map);
 
 function toRadians (angle) {
@@ -55,6 +56,7 @@ function addPoint(point) {
         const bearing = getBearing(prevLat, prevLng, lat, lng).toFixed(2);
         document.getElementById('list').innerHTML +=
             `<div class="list">Bearing: ${bearing}°, Distance: ${distance} m</div>`;
+        result.push({bearing, distance})
     }
 
     points.push([lat, lng]);
@@ -77,6 +79,7 @@ function removePoint() {
     if (!hasOneMarker){
         const list = document.getElementById('list');
         list.removeChild(list.lastElementChild); 
+        result.pop();
     }
 
     points.pop();

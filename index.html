@@ -41,7 +41,14 @@
             overflow-y: auto;          /* scroll if content overflows */
         }
 
-
+        #buttons {
+            display:flex;
+            gap:10px; 
+            margin-bottom:10px; 
+            width:100%;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+        }
 
         #info {
             margin-top: auto;
@@ -71,9 +78,12 @@
         <img src="favicon-32x32.png" alt="icon" style="width:24px; height:24px; vertical-align:middle; margin-right:8px;">
             Bearing Distance Calculator
         </h2>
-        <button id="undoBtn" style="margin-bottom:10px;">Undo Last</button>
+        <div id="buttons">
+            <button id="undoBtn" style="flex:1;">Undo Last</button>
+            <button id="exportCSVBtn" style="flex:1;">Export CSV</button>
+            <button id="exportXLSXBtn" style="flex:1;">Export XLSX</button>
+        </div>
         <div id="list"></div>
-
         <div id="info">
             <span style="font-size:14px; color:#555;">Programmed by Luuk van Berkel</span>
             <a class="github-button" href="https://github.com/LuukBerkel" data-size="large" data-show-count="true" aria-label="Follow me on GitHub">Follow </a>
@@ -82,6 +92,7 @@
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="./calculator.js"></script> 
+    <script src="./export.js"></script> 
     <script>
         map.on('click', function (e) {
             addPoint(e);
@@ -91,12 +102,23 @@
             removePoint();
         });
 
+        document.getElementById('exportCSVBtn').addEventListener('click', () => {
+            exportData(result, "csv");
+        });
+
+        document.getElementById('exportXLSXBtn').addEventListener('click', () => {
+            exportData(result, "xlsx");
+        });
+
         document.addEventListener('keydown', function(event) {
-        if (event.ctrlKey && event.key === 'z') {
-            removePoint();
-        }
+            if (event.ctrlKey && event.key === 'z') {
+                removePoint();
+            }
         });
     </script>
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+
 </body>
 </html>
