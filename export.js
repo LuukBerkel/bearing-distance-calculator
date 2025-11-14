@@ -4,7 +4,7 @@ function exportData(input, format) {
     }
 
     const matrix = [
-        ["Bearing", "Distance"]
+        ["Bearing (°)", "Distance (m)"]
     ];
     input.forEach(item => {
         matrix.push([item.bearing, item.distance]);
