@@ -67,6 +67,36 @@
             border-radius: 5px;
             font-size: 14px;
         }
+
+    
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column; 
+            }
+
+            h2 {
+                margin-top: 0;
+                font-size: larger;
+            }
+
+            #map {
+                flex: 1;
+                height: 50vh; 
+            }
+    
+
+
+            #sidebar {
+                flex: none;
+                height: 25vh; /* sidebar takes bottom half */
+                border-left: none;
+                border-top: 2px solid #ccc;
+            }
+
+            #buttons {
+                flex-wrap: wrap; /* wrap buttons if needed */
+            }
+        }
     </style>
 </head>
 <body>
